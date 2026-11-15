@@ -106,6 +106,7 @@ export default function App() {
   const [envelopeOpened, setEnvelopeOpened] = useState(false)
   const [invitationRevealed, setInvitationRevealed] = useState(false)
   const videoRef = useRef<HTMLVideoElement>(null)
+  const audioRef = useRef<HTMLAudioElement>(null)
   const revealTimerRef = useRef<number | null>(null)
 
   useEffect(() => {
@@ -116,20 +117,33 @@ export default function App() {
     }
   }, [])
 
-  const openEnvelope = () => {
-    if (envelopeOpened) return
+ const openEnvelope = () => {
+  if (envelopeOpened) return
 
-    setEnvelopeOpened(true)
-    // The muted video is already playing in the background. Keep play() as a fallback for browsers that block autoplay.
-    videoRef.current?.play().catch(() => undefined)
-    revealTimerRef.current = window.setTimeout(
-      () => setInvitationRevealed(true),
-      ENVELOPE_OPEN_DURATION_MS,
-    )
-  }
+  setEnvelopeOpened(true)
+
+  // تشغيل الأغنية عند فتح الظرف
+  audioRef.current?.play().catch((error) => {
+    console.log("Music playback error:", error)
+  })
+
+  // تشغيل الفيديو
+  videoRef.current?.play().catch(() => undefined)
+
+  revealTimerRef.current = window.setTimeout(
+    () => setInvitationRevealed(true),
+    ENVELOPE_OPEN_DURATION_MS,
+  )
+}
 
   return (
     <main dir="rtl" className={invitationRevealed ? "invitation-opened" : ""}>
+       <audio
+        ref={audioRef}
+        src={`${import.meta.env.BASE_URL}m.mp3.mpeg`}
+        loop
+        preload="auto"
+      />
       <section className="hero" aria-label="دعوة أفراح عائلة العلواني">
         <video
           ref={videoRef}
