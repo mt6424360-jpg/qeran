@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react"
 
 const EVENT_DATE = new Date("2026-12-03T13:00:00")
-const ENVELOPE_OPEN_DURATION_MS = 300
+const ENVELOPE_OPEN_DURATION_MS = 650
 const VENUE_URL = "https://maps.app.goo.gl/yPZNn4bD51WAQkix7"
 
 type IconName = "calendar" | "clock" | "location" | "arrow"
@@ -67,13 +67,7 @@ function Countdown() {
   )
 }
 
-function HeroEnvelope({
-  opened,
-  onOpen,
-}: {
-  opened: boolean
-  onOpen: () => void
-}) {
+function HeroEnvelope({ opened, onOpen }: { opened: boolean; onOpen: () => void }) {
   return (
     <div className={`hero-envelope-scene ${opened ? "is-open" : ""}`}>
       <button
@@ -87,11 +81,17 @@ function HeroEnvelope({
           className="envelope-closed"
           src={`${import.meta.env.BASE_URL}assets/green-envelope.png`}
           alt=""
+          loading="eager"
+          fetchPriority="high"
+          decoding="async"
         />
         <img
           className="envelope-open"
-          src={`${import.meta.env.BASE_URL}assets/z-envelope-cutout.png`}
+          src={`${import.meta.env.BASE_URL}assets/open-green-envelope.png`}
           alt=""
+          loading="eager"
+          fetchPriority="high"
+          decoding="async"
         />
         <span className="envelope-prompt">
           <b>اضغط على الظرف</b>
@@ -105,6 +105,7 @@ function HeroEnvelope({
 export default function App() {
   const [envelopeOpened, setEnvelopeOpened] = useState(false)
   const [invitationRevealed, setInvitationRevealed] = useState(false)
+  const envelopeOpeningRef = useRef(false)
   const videoRef = useRef<HTMLVideoElement>(null)
   const audioRef = useRef<HTMLAudioElement>(null)
   const revealTimerRef = useRef<number | null>(null)
@@ -117,28 +118,31 @@ export default function App() {
     }
   }, [])
 
- const openEnvelope = () => {
-  if (envelopeOpened) return
+  const openEnvelope = () => {
+    if (envelopeOpeningRef.current) return
+    envelopeOpeningRef.current = true
+    setEnvelopeOpened(true)
 
-  setEnvelopeOpened(true)
+    audioRef.current?.play().catch((error) => {
+      console.log("Music playback error:", error)
+    })
+    videoRef.current?.play().catch(() => undefined)
 
-  // تشغيل الأغنية عند فتح الظرف
-  audioRef.current?.play().catch((error) => {
-    console.log("Music playback error:", error)
-  })
-
-  // تشغيل الفيديو
-  videoRef.current?.play().catch(() => undefined)
-
-  revealTimerRef.current = window.setTimeout(
-    () => setInvitationRevealed(true),
-    ENVELOPE_OPEN_DURATION_MS,
-  )
-}
+    revealTimerRef.current = window.setTimeout(
+      () => setInvitationRevealed(true),
+      ENVELOPE_OPEN_DURATION_MS,
+    )
+  }
 
   return (
-    <main dir="rtl" className={invitationRevealed ? "invitation-opened" : ""}>
-       <audio
+    <main
+      dir="rtl"
+      className={invitationRevealed ? "invitation-opened" : ""}
+      style={{
+        background: `url(${import.meta.env.BASE_URL}assets/invitation-paper.jpg) center center / cover fixed no-repeat`,
+      }}
+    >
+      <audio
         ref={audioRef}
         src={`${import.meta.env.BASE_URL}m.mp3.mpeg`}
         loop
@@ -223,6 +227,9 @@ export default function App() {
               src={`${import.meta.env.BASE_URL}assets/ornate-frame-cutout.png`}
               alt=""
               aria-hidden="true"
+              loading="eager"
+              fetchPriority="high"
+              decoding="async"
             />
             <div className="card-copy">
               <div className="your-text">
@@ -235,7 +242,6 @@ export default function App() {
                   بدعوتكم لحضور مأدبة غداء وعقد قِران
                 </p>
               </div>
-
               <p className="groom-label">نجلها</p>
               <h3>السلطان أيمن</h3>
               <p className="closing">بحضوركم تكتمل فرحتنا</p>
@@ -243,7 +249,6 @@ export default function App() {
           </article>
 
           <p className="event-intro">تفاصيل المناسبة</p>
-
           <div className="details-grid">
             <div className="detail-card">
               <span className="icon-disc">
@@ -254,7 +259,6 @@ export default function App() {
                 <strong>الخميس، 3 / 12 / 2026</strong>
               </div>
             </div>
-
             <div className="detail-card">
               <span className="icon-disc">
                 <Icon name="clock" />
@@ -264,7 +268,6 @@ export default function App() {
                 <strong>الساعة 1:00 ظهراً</strong>
               </div>
             </div>
-
             <a
               className="detail-card location-card"
               href={VENUE_URL}
@@ -288,7 +291,6 @@ export default function App() {
             <span>باقي على فرحتنا</span>
           </div>
           <Countdown />
-
           <footer>
             <span>ننتظر حضوركم بكل محبة</span>
             <b>عائلة العلواني</b>
