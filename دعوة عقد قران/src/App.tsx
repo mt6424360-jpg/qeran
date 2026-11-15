@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react"
 
 const EVENT_DATE = new Date("2026-12-03T13:00:00")
-const ENVELOPE_OPEN_DURATION_MS = 650
+const ENVELOPE_OPEN_DURATION_MS = 300
 
 type IconName = "calendar" | "clock" | "location" | "arrow"
 
@@ -119,7 +119,7 @@ export default function App() {
     if (envelopeOpened) return
 
     setEnvelopeOpened(true)
-    // Start the video while the envelope animates, but keep it hidden until the envelope opens.
+    // The muted video is already playing in the background. Keep play() as a fallback for browsers that block autoplay.
     videoRef.current?.play().catch(() => undefined)
     revealTimerRef.current = window.setTimeout(
       () => setInvitationRevealed(true),
@@ -133,14 +133,12 @@ export default function App() {
         <video
           ref={videoRef}
           className="hero-video"
-          style={{
-            opacity: invitationRevealed ? 1 : 0,
-            transition: "opacity .25s ease",
-          }}
           src={`${import.meta.env.BASE_URL}assets/invitation-background.mp4`}
           playsInline
           muted
-          preload="metadata"
+          autoPlay
+          loop
+          preload="auto"
           poster={`${import.meta.env.BASE_URL}assets/video-poster.jpg`}
         />
         <div className="hero-shade" />
@@ -169,7 +167,7 @@ export default function App() {
           <button
             className="scroll-hint"
             type="button"
-            style={{ animationDelay: ".35s" }}
+            style={{ animationDelay: ".1s" }}
             onClick={() =>
               document
                 .querySelector("#invitation-card")
