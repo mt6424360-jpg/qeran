@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react"
 
 const EVENT_DATE = new Date("2026-12-03T13:00:00")
+const ENVELOPE_OPEN_DURATION_MS = 650
 
 type IconName = "calendar" | "clock" | "location" | "arrow"
 
@@ -101,48 +102,59 @@ function HeroEnvelope({
 }
 
 export default function App() {
-  const [opened, setOpened] = useState(false)
+  const [envelopeOpened, setEnvelopeOpened] = useState(false)
+  const [invitationRevealed, setInvitationRevealed] = useState(false)
   const videoRef = useRef<HTMLVideoElement>(null)
-  const backdropVideoRef = useRef<HTMLVideoElement>(null)
+  const revealTimerRef = useRef<number | null>(null)
 
-  const revealInvitation = () => {
-    setOpened(true)
-    window.setTimeout(() => {
-      videoRef.current?.play().catch(() => undefined)
-      backdropVideoRef.current?.play().catch(() => undefined)
-    }, 100)
+  useEffect(() => {
+    return () => {
+      if (revealTimerRef.current !== null) {
+        window.clearTimeout(revealTimerRef.current)
+      }
+    }
+  }, [])
+
+  const openEnvelope = () => {
+    if (envelopeOpened) return
+
+    setEnvelopeOpened(true)
+    // Start the video while the envelope animates, but keep it hidden until the envelope opens.
+    videoRef.current?.play().catch(() => undefined)
+    revealTimerRef.current = window.setTimeout(
+      () => setInvitationRevealed(true),
+      ENVELOPE_OPEN_DURATION_MS,
+    )
   }
 
   return (
-    <main dir="rtl" className={opened ? "invitation-opened" : ""}>
+    <main dir="rtl" className={invitationRevealed ? "invitation-opened" : ""}>
       <section className="hero" aria-label="دعوة أفراح عائلة العلواني">
-        <video
-          ref={backdropVideoRef}
-          className="hero-video-backdrop"
-          src={`${import.meta.env.BASE_URL}assets/invitation-background.mp4`}
-          playsInline
-          muted
-          preload="auto"
-          aria-hidden="true"
-        />
         <video
           ref={videoRef}
           className="hero-video"
+          style={{
+            opacity: invitationRevealed ? 1 : 0,
+            transition: "opacity .25s ease",
+          }}
           src={`${import.meta.env.BASE_URL}assets/invitation-background.mp4`}
           playsInline
           muted
-          preload="auto"
+          preload="metadata"
           poster={`${import.meta.env.BASE_URL}assets/video-poster.jpg`}
         />
         <div className="hero-shade" />
 
-        <div className="family-heading">
+        <div
+          className="family-heading"
+          style={{ animationDuration: ".45s", animationDelay: ".05s" }}
+        >
           <span>أفراح</span>
           <h1>عائلة العلواني</h1>
           <i />
         </div>
 
-        <HeroEnvelope opened={opened} onOpen={revealInvitation} />
+        <HeroEnvelope opened={envelopeOpened} onOpen={openEnvelope} />
 
         <div className="incense-smoke" aria-hidden="true">
           <span />
@@ -153,103 +165,108 @@ export default function App() {
           <span />
         </div>
 
-        <button
-          className="scroll-hint"
-          type="button"
-          onClick={() =>
-            document
-              .querySelector("#invitation-card")
-              ?.scrollIntoView({ behavior: "smooth" })
-          }
-        >
-          <span>مرّر لرؤية الدعوة</span>
-          <svg viewBox="0 0 24 24" aria-hidden="true">
-            <path d="m6 9 6 6 6-6" />
-          </svg>
-        </button>
-      </section>
-
-      <section className="content-section" id="invitation-card">
-        <div className="fine-ornament" aria-hidden="true">
-          <span />
-        </div>
-
-        <article className="invitation-card">
-          <img
-            src={`${import.meta.env.BASE_URL}assets/ornate-frame-cutout.png`}
-            alt=""
-            aria-hidden="true"
-          />
-          <div className="card-copy">
-            <div className="your-text">
-              <span className="second-line">بسم الله الرحمن الرحيم</span>
-              <p className="honor">
-                بكل ود، تتشرف عائلة الحاج
-                <br />
-                <strong>مصطفى العلواني</strong>
-                <br />
-                بدعوتكم لحضور مأدبة غداء وعقد قِران
-              </p>
-            </div>
-
-            <p className="groom-label">نجلها</p>
-            <h3>السلطان أيمن</h3>
-            <p className="closing">بحضوركم تكتمل فرحتنا</p>
-          </div>
-        </article>
-
-        <p className="event-intro">تفاصيل المناسبة</p>
-
-        <div className="details-grid">
-          <div className="detail-card">
-            <span className="icon-disc">
-              <Icon name="calendar" />
-            </span>
-            <div>
-              <small>التاريخ</small>
-              <strong>الخميس، 3 / 12 / 2026</strong>
-            </div>
-          </div>
-
-          <div className="detail-card">
-            <span className="icon-disc">
-              <Icon name="clock" />
-            </span>
-            <div>
-              <small>الوقت</small>
-              <strong>الساعة 1:00 ظهراً</strong>
-            </div>
-          </div>
-
-          <a
-            className="detail-card location-card"
-            href="https://www.google.com/maps/search/?api=1&query=%D9%82%D8%A7%D8%B9%D8%A9+%D8%A7%D9%84%D8%B9%D9%84%D9%88%D8%A7%D9%86%D9%8A"
-            target="_blank"
-            rel="noreferrer"
+        {invitationRevealed && (
+          <button
+            className="scroll-hint"
+            type="button"
+            style={{ animationDelay: ".35s" }}
+            onClick={() =>
+              document
+                .querySelector("#invitation-card")
+                ?.scrollIntoView({ behavior: "smooth" })
+            }
           >
-            <span className="icon-disc">
-              <Icon name="location" />
-            </span>
-            <div>
-              <small>المكان</small>
-              <strong>اضغط لرؤية موقع الصالة</strong>
-            </div>
-            <span className="location-arrow">
-              <Icon name="arrow" />
-            </span>
-          </a>
-        </div>
-
-        <div className="countdown-heading">
-          <span>باقي على فرحتنا</span>
-        </div>
-        <Countdown />
-
-        <footer>
-          <span>ننتظر حضوركم بكل محبة</span>
-          <b>عائلة العلواني</b>
-        </footer>
+            <span>مرّر لرؤية الدعوة</span>
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="m6 9 6 6 6-6" />
+            </svg>
+          </button>
+        )}
       </section>
+
+      {invitationRevealed && (
+        <section className="content-section" id="invitation-card">
+          <div className="fine-ornament" aria-hidden="true">
+            <span />
+          </div>
+
+          <article className="invitation-card">
+            <img
+              src={`${import.meta.env.BASE_URL}assets/ornate-frame-cutout.png`}
+              alt=""
+              aria-hidden="true"
+            />
+            <div className="card-copy">
+              <div className="your-text">
+                <span className="second-line">بسم الله الرحمن الرحيم</span>
+                <p className="honor">
+                  بكل ود، تتشرف عائلة الحاج
+                  <br />
+                  <strong>مصطفى العلواني</strong>
+                  <br />
+                  بدعوتكم لحضور مأدبة غداء وعقد قِران
+                </p>
+              </div>
+
+              <p className="groom-label">نجلها</p>
+              <h3>السلطان أيمن</h3>
+              <p className="closing">بحضوركم تكتمل فرحتنا</p>
+            </div>
+          </article>
+
+          <p className="event-intro">تفاصيل المناسبة</p>
+
+          <div className="details-grid">
+            <div className="detail-card">
+              <span className="icon-disc">
+                <Icon name="calendar" />
+              </span>
+              <div>
+                <small>التاريخ</small>
+                <strong>الخميس، 3 / 12 / 2026</strong>
+              </div>
+            </div>
+
+            <div className="detail-card">
+              <span className="icon-disc">
+                <Icon name="clock" />
+              </span>
+              <div>
+                <small>الوقت</small>
+                <strong>الساعة 1:00 ظهراً</strong>
+              </div>
+            </div>
+
+            <a
+              className="detail-card location-card"
+              href="https://www.google.com/maps/search/?api=1&query=%D9%82%D8%A7%D8%B9%D8%A9+%D8%A7%D9%84%D8%B9%D9%84%D9%88%D8%A7%D9%86%D9%8A"
+              target="_blank"
+              rel="noreferrer"
+            >
+              <span className="icon-disc">
+                <Icon name="location" />
+              </span>
+              <div>
+                <small>المكان</small>
+                <strong>اضغط لرؤية موقع الصالة</strong>
+              </div>
+              <span className="location-arrow">
+                <Icon name="arrow" />
+              </span>
+            </a>
+          </div>
+
+          <div className="countdown-heading">
+            <span>باقي على فرحتنا</span>
+          </div>
+          <Countdown />
+
+          <footer>
+            <span>ننتظر حضوركم بكل محبة</span>
+            <b>عائلة العلواني</b>
+          </footer>
+        </section>
+      )}
     </main>
   )
 }
