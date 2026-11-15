@@ -182,17 +182,17 @@ export default function App() {
           />
           <div className="card-copy">
             <div className="your-text">
-              <div className="your-text">
-                <span className="second-line">بسم الله الرحمن الرحيم </span>
-              </div>
+              <span className="second-line">بسم الله الرحمن الرحيم</span>
+              <p className="honor">
+                بكل ود، تتشرف عائلة الحاج
+                <br />
+                <strong>مصطفى العلواني</strong>
+                <br />
+                بدعوتكم لحضور مأدبة غداء وعقد قِران
+              </p>
             </div>
 
-            <h2>
-              دعوة غداء
-              <br />
-              وقراءة الفاتحة
-            </h2>
-            <p className="groom-label">للشاب</p>
+            <p className="groom-label">نجلها</p>
             <h3>السلطان أيمن</h3>
             <p className="closing">بحضوركم تكتمل فرحتنا</p>
           </div>
