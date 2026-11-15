@@ -185,9 +185,24 @@ export default function App() {
 
       {invitationRevealed && (
         <section className="content-section" id="invitation-card">
-          <div className="fine-ornament" aria-hidden="true">
-            <span />
-          </div>
+          <p
+            className="quran-verse"
+            lang="ar"
+            dir="rtl"
+            style={{
+              maxWidth: 520,
+              margin: "0 auto 30px",
+              color: "#665638",
+              fontFamily: "'Aref Ruqaa', serif",
+              fontSize: "clamp(16px, 4vw, 22px)",
+              lineHeight: 2,
+              textAlign: "center",
+            }}
+          >
+            وَمِنْ آيَاتِهِ أَنْ خَلَقَ لَكُم مِّنْ أَنْفُسِكُمْ أَزْوَاجًا
+            لِّتَسْكُنُوا إِلَيْهَا وَجَعَلَ بَيْنَكُم مَّوَدَّةً وَرَحْمَةً ۚ
+            إِنَّ فِي ذَٰلِكَ لَآيَاتٍ لِّقَوْمٍ يَتَفَكَّرُونَ
+          </p>
 
           <article className="invitation-card">
             <img
