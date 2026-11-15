@@ -211,7 +211,7 @@ main {
 
 .hero-envelope-scene.is-open .envelope-open {
   opacity: 1;
-  transform: translateY(-110px) rotateX(0) scale(8);
+  transform: translateY(-110px) rotateX(0) scale(-5);
   filter: brightness(1);
 }
 
