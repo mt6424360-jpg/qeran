@@ -116,7 +116,7 @@ main {
   top: clamp(175px, 23vh, 245px);
   left: 50%;
   width: min(66vw, 220px);
-  height: 300px;
+  height: 360px;
   translate: -50% 0;
   perspective: 1400px;
 }
@@ -159,20 +159,20 @@ main {
   opacity: 1;
   transform-origin: 50% 70%;
   transition:
-    opacity .45s ease .18s,
-    transform .7s cubic-bezier(.55, 0, .2, 1),
+    opacity .35s ease .05s,
+    transform .6s cubic-bezier(.55, 0, .2, 1),
     filter .5s ease;
 }
 
 .envelope-open {
   z-index: 2;
   opacity: 0;
-  transform: translateY(-50px) rotateX(-20deg) scale(.9);
+  transform: translateY(-30px) rotateX(-20deg) scale(.9);
   transform-origin: 50% 100%;
   transition:
-    opacity .5s ease .3s,
-    transform .95s cubic-bezier(.18,.82,.2,1) .18s,
-    filter .65s ease .2s;
+    opacity .35s ease .05s,
+    transform .6s cubic-bezier(.18,.82,.2,1) .05s,
+    filter .5s ease .05s;
   filter: brightness(.88);
 }
 
@@ -597,7 +597,7 @@ footer b {
 @media (max-width: 390px) {
   .hero-envelope-scene {
     top: 22vh;
-    width: min(70vw, 270px);
+    width: min(70vw, 220px);
   }
 
   .details-grid { grid-template-columns: 1fr; }
