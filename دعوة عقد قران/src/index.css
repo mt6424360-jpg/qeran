@@ -115,7 +115,7 @@ main {
   z-index: 5;
   top: clamp(175px, 23vh, 245px);
   left: 50%;
-  width: min(66vw, 240px);
+  width: min(66vw, 220px);
   height: 300px;
   translate: -50% 0;
   perspective: 1400px;
