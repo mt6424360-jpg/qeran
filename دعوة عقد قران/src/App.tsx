@@ -83,12 +83,12 @@ function HeroEnvelope({
       >
         <img
           className="envelope-closed"
-          src="/assets/green-envelope.png"
+          src={`${import.meta.env.BASE_URL}assets/green-envelope.png`}
           alt=""
         />
         <img
           className="envelope-open"
-          src="/assets/z-envelope-cutout.png"
+          src={`${import.meta.env.BASE_URL}assets/z-envelope-cutout.png`}
           alt=""
         />
         <span className="envelope-prompt">
@@ -119,7 +119,7 @@ export default function App() {
         <video
           ref={backdropVideoRef}
           className="hero-video-backdrop"
-          src="/assets/invitation-background.mp4"
+          src={`${import.meta.env.BASE_URL}assets/invitation-background.mp4`}
           playsInline
           muted
           preload="auto"
@@ -128,11 +128,11 @@ export default function App() {
         <video
           ref={videoRef}
           className="hero-video"
-          src="/assets/invitation-background.mp4"
+          src={`${import.meta.env.BASE_URL}assets/invitation-background.mp4`}
           playsInline
           muted
           preload="auto"
-          poster="/assets/video-poster.jpg"
+          poster={`${import.meta.env.BASE_URL}assets/video-poster.jpg`}
         />
         <div className="hero-shade" />
 
@@ -173,24 +173,20 @@ export default function App() {
         <div className="fine-ornament" aria-hidden="true">
           <span />
         </div>
-        
 
         <article className="invitation-card">
           <img
-            src="/assets/ornate-frame-cutout.png"
+            src={`${import.meta.env.BASE_URL}assets/ornate-frame-cutout.png`}
             alt=""
             aria-hidden="true"
           />
           <div className="card-copy">
             <div className="your-text">
               <div className="your-text">
-  
-  <span className="second-line">بسم الله الرحمن الرحيم </span>
-</div>
-  
-  
-</div>
-            
+                <span className="second-line">بسم الله الرحمن الرحيم </span>
+              </div>
+            </div>
+
             <h2>
               دعوة غداء
               <br />
