@@ -153,7 +153,7 @@ export default function App() {
           muted
           autoPlay
           loop
-          preload="auto"
+          preload="metadata"
           poster={`${import.meta.env.BASE_URL}assets/video-poster.jpg`}
         />
         <div className="hero-shade" />
