@@ -245,7 +245,7 @@ export default function App() {
                 <Icon name="location" />
               </span>
               <div>
-                <small>المكان</small>
+                <small>المكان: صالة قصر مارينا(قاعة فيولا)</small>
                 <strong>اضغط لرؤية موقع الصالة</strong>
               </div>
               <span className="location-arrow">
