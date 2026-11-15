@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react"
 
 const EVENT_DATE = new Date("2026-12-03T13:00:00")
 const ENVELOPE_OPEN_DURATION_MS = 300
+const VENUE_URL = "https://maps.app.goo.gl/yPZNn4bD51WAQkix7"
 
 type IconName = "calendar" | "clock" | "location" | "arrow"
 
@@ -237,7 +238,7 @@ export default function App() {
 
             <a
               className="detail-card location-card"
-              href="https://www.google.com/maps/search/?api=1&query=%D9%82%D8%A7%D8%B9%D8%A9+%D8%A7%D9%84%D8%B9%D9%84%D9%88%D8%A7%D9%86%D9%8A"
+              href={VENUE_URL}
               target="_blank"
               rel="noreferrer"
             >
@@ -245,7 +246,7 @@ export default function App() {
                 <Icon name="location" />
               </span>
               <div>
-                <small>المكان: صالة قصر مارينا(قاعة فيولا)</small>
+                <small>المكان: صالة قصر مارينا (قاعة فيولا)</small>
                 <strong>اضغط لرؤية موقع الصالة</strong>
               </div>
               <span className="location-arrow">
