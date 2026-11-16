@@ -90,7 +90,7 @@ function HeroEnvelope({
         />
         <img
           className="envelope-open"
-          src={`${import.meta.env.BASE_URL}assets/z-envelope-cutout.png`}
+          src={`${import.meta.env.BASE_URL}assets/z-envelope-cutout.webp`}
           alt=""
         />
         <span className="envelope-prompt">
