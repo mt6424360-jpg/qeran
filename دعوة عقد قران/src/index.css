@@ -613,3 +613,34 @@ footer b {
     transition-duration: .01ms !important;
   }
 }
+
+.music-toggle {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 9999;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: 1px solid #D4AF37;
+  background: linear-gradient(145deg, #31583e, #193b29);
+  color: #e5c878;
+  font-size: 27px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 3px 15px rgba(0,0,0,0.2);
+}
+
+.music-toggle.playing {
+  animation: musicPulse 2s infinite;
+}
+
+@keyframes musicPulse {
+  50% {
+    box-shadow: 0 0 0 9px rgba(212,175,55,0);
+  }
+}
+
+
