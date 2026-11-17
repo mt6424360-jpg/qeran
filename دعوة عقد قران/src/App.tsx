@@ -105,9 +105,28 @@ function HeroEnvelope({
 export default function App() {
   const [envelopeOpened, setEnvelopeOpened] = useState(false)
   const [invitationRevealed, setInvitationRevealed] = useState(false)
+  const [isMusicOn, setIsMusicOn] = useState(false)
   const videoRef = useRef<HTMLVideoElement>(null)
   const audioRef = useRef<HTMLAudioElement>(null)
   const revealTimerRef = useRef<number | null>(null)
+
+  const toggleMusic = async () => {
+  const audio = audioRef.current
+  if (!audio) return
+
+  if (isMusicOn) {
+    audio.pause()
+    setIsMusicOn(false)
+  } else {
+    try {
+      await audio.play()
+      setIsMusicOn(true)
+    } catch (error) {
+      console.log("Music playback error:", error)
+      setIsMusicOn(false)
+    }
+  }
+}
 
   useEffect(() => {
     return () => {
@@ -122,10 +141,13 @@ export default function App() {
 
   setEnvelopeOpened(true)
 
-  // تشغيل الأغنية عند فتح الظرف
-  audioRef.current?.play().catch((error) => {
-    console.log("Music playback error:", error)
-  })
+// تشغيل الأغنية عند فتح الظرف
+const audio = audioRef.current
+if (audio) {
+  audio.play()
+    .then(() => setIsMusicOn(true))
+    .catch(() => setIsMusicOn(false))
+   }
 
   // تشغيل الفيديو
   videoRef.current?.play().catch(() => undefined)
@@ -138,6 +160,15 @@ export default function App() {
 
   return (
     <main dir="rtl" className={invitationRevealed ? "invitation-opened" : ""}>
+      <button
+        type="button"
+        className={`music-toggle ${isMusicOn ? "playing" : ""}`}
+        onClick={toggleMusic}
+        aria-label={isMusicOn ? "إيقاف الموسيقى" : "تشغيل الموسيقى"}
+      >
+       <span>{isMusicOn ? "♫" : "♪"}</span>
+      </button>
+      
        <audio
         ref={audioRef}
         src={`${import.meta.env.BASE_URL}m.mp3.mpeg`}
