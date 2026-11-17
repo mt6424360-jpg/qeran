@@ -143,7 +143,8 @@ export default function App() {
         src={`${import.meta.env.BASE_URL}m.mp3.mpeg`}
         loop
         preload="auto"
-      />
+        playsInline
+       />
       <section className="hero" aria-label="دعوة أفراح عائلة العلواني">
         <video
           ref={videoRef}
@@ -163,7 +164,7 @@ export default function App() {
           style={{ animationDuration: ".45s", animationDelay: ".05s" }}
         >
           <span>أفراح</span>
-          <h1>عائلة العلواني</h1>
+          <h1>عائلة بن سليمان</h1>
           <i />
         </div>
 
@@ -230,7 +231,7 @@ export default function App() {
                 <p className="honor">
                   بكل ود، تتشرف عائلة الحاج
                   <br />
-                  <strong>مصطفى العلواني</strong>
+                  <strong>مصطفى سليمان</strong>
                   <br />
                   بدعوتكم لحضور مأدبة غداء وعقد قِران
                 </p>
@@ -291,7 +292,7 @@ export default function App() {
 
           <footer>
             <span>ننتظر حضوركم بكل محبة</span>
-            <b>عائلة العلواني</b>
+            <b>عائلة بن سليمان</b>
           </footer>
         </section>
       )}
